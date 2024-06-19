@@ -62,6 +62,8 @@ namespace ZhouYu
             }
             #endregion
 
+            //0.1f意味着参数值会在0.1秒内逐渐变化到目标值，而不是立即改变。
+            //会过度的非常自然而没有那么突兀
             anim.SetFloat(vertical, v, 0.1f, Time.deltaTime);
             anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
         }

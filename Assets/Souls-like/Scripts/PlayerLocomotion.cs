@@ -18,7 +18,7 @@ namespace ZhouYu
         public GameObject normaCamera;
 
         [Header("Stats")]
-        [SerializeField]   //ÔÚinspector´°¿ÚÏÔÊ¾
+        [SerializeField]   //åœ¨inspectorçª—å£æ˜¾ç¤º
         float movementSpeed = 5;
 
         [SerializeField]
@@ -40,18 +40,20 @@ namespace ZhouYu
             float delta = Time.deltaTime;
             inputHandler.TickInput(delta);
 
-            //ÉãÏñ»úµÄ·½ÏòÊÇÇ°·½£¬µÃ³öÔË¶¯·½Ïò
+            //æ‘„åƒæœºçš„æ–¹å‘æ˜¯å‰æ–¹ï¼Œå¾—å‡ºè¿åŠ¨æ–¹å‘
             moveDirection = cameraObject.forward * inputHandler.vertical;
             moveDirection += cameraObject.right * inputHandler.horizontal;
             moveDirection.Normalize();
+            moveDirection.y = 0;
 
             float speed = movementSpeed;
             moveDirection *= speed;
 
-            //ÔË¶¯·½Ïò¶ÔÆ½ÃæÍ¶Ó°
+            //è¿åŠ¨æ–¹å‘å¯¹å¹³é¢æŠ•å½±,ä½†æ˜¯æˆ‘è§‰å¾—è¿™è¡Œä»£ç æ²¡æœ‰ä»€ä¹ˆç”¨
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
-            //¸Ä±äÎïÌåµÄËÙ¶È
-            rigidbody.linearVelocity = projectedVelocity;
+
+            //æ”¹å˜ç‰©ä½“çš„é€Ÿåº¦
+            rigidbody.linearVelocity = moveDirection;
 
             animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
 
@@ -62,12 +64,12 @@ namespace ZhouYu
         }
 
         #region Movement
-        Vector3 normalVector = new Vector3(0, 1, 0);
+        Vector3 normalVector;
         Vector3 targetPosition;
 
         /// <summary>
-        /// Ğı×ªÎïÌå
-        /// Í¨¹ıÉãÏñ»ú·½ÏòÈ·¶¨ÊäÈëµÄ·½Ïò£¬È»ºóÍ¨¹ıSlerpÈ¥¸Ä±äÎïÌåµÄ³¯Ïò
+        /// æ—‹è½¬ç‰©ä½“
+        /// é€šè¿‡æ‘„åƒæœºæ–¹å‘ç¡®å®šè¾“å…¥çš„æ–¹å‘ï¼Œç„¶åé€šè¿‡Slerpå»æ”¹å˜ç‰©ä½“çš„æœå‘
         /// </summary>
         /// <param name="delta"></param>
         private void HandleRotation(float delta)
