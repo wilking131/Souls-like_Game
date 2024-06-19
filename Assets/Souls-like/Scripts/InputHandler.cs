@@ -24,19 +24,6 @@ namespace ZhouYu
             cameraHandler = CameraHandler.singleton;
         }
 
-        private void FixedUpdate()
-        {
-            float delta = Time.fixedDeltaTime;
-
-            if (cameraHandler != null)
-            {
-                cameraHandler.Followtarget(delta);
-                cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
-            }
-        }
-
-
-
         public void OnEnable()
         {
             if (inputActions == null)
@@ -59,15 +46,30 @@ namespace ZhouYu
 
         }
 
-        private void OnDisable()
+
+        private void FixedUpdate()
         {
-            inputActions.Disable();
+            float delta = Time.fixedDeltaTime;
+
+            if (cameraHandler != null)
+            {
+                cameraHandler.Followtarget(delta);
+                cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
+            }
         }
 
         public void TickInput(float delta)
         {
             MoveInput(delta);
         }
+
+
+        private void OnDisable()
+        {
+            inputActions.Disable();
+        }
+
+
 
         private void MoveInput(float delta)
         {

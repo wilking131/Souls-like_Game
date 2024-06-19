@@ -53,7 +53,7 @@ namespace ZhouYu
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
 
             //改变物体的速度
-            rigidbody.linearVelocity = moveDirection;
+            rigidbody.linearVelocity = projectedVelocity;
 
             animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
 

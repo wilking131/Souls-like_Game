@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Floor_Color_MI
+  m_Name: Floor_Color0_MI
   m_Shader: {fileID: 4800000, guid: 796148527abdae043a7ca009fbf33ee3, type: 3}
   m_Parent: {fileID: 2100000, guid: 70b73157680e0dc44902582b8b236961, type: 2}
   m_ModifiedSerializedProperties: 0
@@ -22,10 +22,22 @@ Material:
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _Albedo_1:
+        m_Texture: {fileID: 2800000, guid: bd42861f6042925479ab99166446e954, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Mask_1:
+        m_Texture: {fileID: 2800000, guid: e70e12d4015da6340bc6652f3c0f3c2b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal_1:
+        m_Texture: {fileID: 2800000, guid: e7a243672720ed14ea9fb94ed448a1d1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats: []
     m_Colors:
-    - _BaseColor: {r: 0, g: 1, b: 0.601604, a: 0}
+    - _BaseColor: {r: 0, g: 0.6037114, b: 0.645283, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
