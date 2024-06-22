@@ -12,8 +12,7 @@ namespace ZhouYu
         public Transform myTransform;
         [HideInInspector]
         public AnimatorHandler animatorHandler;
-
-
+  
         public new Rigidbody rigidbody;
         public GameObject normaCamera;
 
@@ -40,27 +39,8 @@ namespace ZhouYu
             float delta = Time.deltaTime;
             inputHandler.TickInput(delta);
 
-            //摄像机的方向是前方，得出运动方向
-            moveDirection = cameraObject.forward * inputHandler.vertical;
-            moveDirection += cameraObject.right * inputHandler.horizontal;
-            moveDirection.Normalize();
-            moveDirection.y = 0;
-
-            float speed = movementSpeed;
-            moveDirection *= speed;
-
-            //运动方向对平面投影,但是我觉得这行代码没有什么用
-            Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
-
-            //改变物体的速度
-            rigidbody.linearVelocity = projectedVelocity;
-
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
-
-            if (animatorHandler.canRotate)
-            {
-                HandleRotation(delta);
-            }
+            HandleMovement(delta);
+            HandleRollingAndSprinting(delta);
         }
 
         #region Movement
@@ -97,6 +77,54 @@ namespace ZhouYu
         }
 
 
+        private void HandleMovement(float delta)
+        {
+            //摄像机的方向是前方，得出运动方向
+            moveDirection = cameraObject.forward * inputHandler.vertical;
+            moveDirection += cameraObject.right * inputHandler.horizontal;
+            moveDirection.Normalize();
+            moveDirection.y = 0;
+
+            float speed = movementSpeed;
+            moveDirection *= speed;
+
+            //运动方向对平面投影,但是我觉得这行代码没有什么用
+            Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
+
+            //改变物体的速度
+            rigidbody.linearVelocity = projectedVelocity;
+
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+
+            if (animatorHandler.canRotate)
+            {
+                HandleRotation(delta);
+            }
+        }
+
+        private void HandleRollingAndSprinting(float delta)
+        {
+            if (animatorHandler.anim.GetBool("isInteracting"))
+                return;
+
+            if (inputHandler.rollFlag)
+            {
+                moveDirection = cameraObject.forward * inputHandler.vertical;
+                moveDirection += cameraObject.right * inputHandler.horizontal;
+
+                if(inputHandler.moveAmount > 0)
+                {
+                    animatorHandler.PlayTargetAnimation("Rolling", true);
+                    moveDirection.y = 0;
+                    Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
+                    myTransform.rotation = rollRotation;
+                }
+                else
+                {
+                    animatorHandler.PlayTargetAnimation("Backstep", true);
+                }
+            }
+        }
 
         #endregion
     }

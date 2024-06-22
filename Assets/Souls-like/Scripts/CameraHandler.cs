@@ -75,7 +75,6 @@ namespace ZhouYu
 
         private void HandleCameraCollision(float delta)
         {
-            print(cameraTransform.localPosition);
             //targetPosition是负数距离
             targetPosition = defaultPosition;
             RaycastHit hit;
@@ -92,7 +91,7 @@ namespace ZhouYu
             }
 
             //摄像机最短距离
-            if(Mathf.Abs(targetPosition) < minimumCollisionOffset)
+            if (Mathf.Abs(targetPosition) < minimumCollisionOffset)
             {
                 targetPosition = -minimumCollisionOffset;
             }

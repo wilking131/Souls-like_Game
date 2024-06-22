@@ -13,8 +13,13 @@ namespace ZhouYu
         public float mouseX;        
         public float mouseY;
 
-        PlayerControls inputActions;
-        CameraHandler cameraHandler;
+        public bool b_Input;
+
+        public bool rollFlag;
+        public bool isInteracting;
+
+        PlayerControls inputActions;        //≈‰÷√Œƒº˛Ω≈±æ
+        CameraHandler cameraHandler;        //   
 
         Vector2 movementInput;
         Vector2 cameraInput;
@@ -61,6 +66,7 @@ namespace ZhouYu
         public void TickInput(float delta)
         {
             MoveInput(delta);
+            HandleRollInput();
         }
 
 
@@ -78,6 +84,17 @@ namespace ZhouYu
             moveAmount = Mathf.Clamp01(Mathf.Abs(horizontal) + Mathf.Abs(vertical));
             mouseX = cameraInput.x;
             mouseY = cameraInput.y;
+        }
+
+        private void HandleRollInput()
+        {
+            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
+            print(inputActions.PlayerActions.Roll.phase);
+
+            if (b_Input)
+            {
+                rollFlag = true;
+            }
         }
     }
 }

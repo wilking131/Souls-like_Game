@@ -6,14 +6,18 @@ namespace ZhouYu
     public class AnimatorHandler : MonoBehaviour
     {
         public Animator anim;
-        int vertical;
+        public InputHandler inputHandler;
+        public PlayerLocomotion playerLocomotion;
+        int vertical;    
         int horizontal;
         public bool canRotate;
 
         public void Initialize()
         {
             anim = GetComponent<Animator>();
-            vertical = Animator.StringToHash("Vertical");   //°Ñ×Ö·û´®±ä³ÉHashÖµ£¬´«²ÎÊı¸ü¿ì
+            inputHandler = GetComponentInParent<InputHandler>();  
+            playerLocomotion = GetComponentInParent<PlayerLocomotion>();
+            vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal"); 
         }
 
@@ -62,10 +66,17 @@ namespace ZhouYu
             }
             #endregion
 
-            //0.1fÒâÎ¶×Å²ÎÊıÖµ»áÔÚ0.1ÃëÄÚÖğ½¥±ä»¯µ½Ä¿±êÖµ£¬¶ø²»ÊÇÁ¢¼´¸Ä±ä¡£
-            //»á¹ı¶ÈµÄ·Ç³£×ÔÈ»¶øÃ»ÓĞÄÇÃ´Í»Ø£
+
             anim.SetFloat(vertical, v, 0.1f, Time.deltaTime);
             anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
+        }
+
+
+        public void PlayTargetAnimation(string targetAnim, bool isInteracting)
+        {
+            anim.applyRootMotion = isInteracting;
+            anim.SetBool("isInteracting", isInteracting);
+            anim.CrossFade(targetAnim, 0.2f);
         }
 
         public void CanRotate()
@@ -76,6 +87,23 @@ namespace ZhouYu
         public void StopRotation()
         {
             canRotate = false;
+        }
+
+        /// <summary>
+        /// æ˜¯æ ¹éª¨éª¼å¹¶ä¸”å‘ç”Ÿä½ç½®çš„æ”¹å˜çš„æ—¶å€™è°ƒç”¨
+        /// ä»æ ¹éª¨éª¼ä¸­è·å–é€Ÿåº¦ï¼Œå¹¶æ”¹å˜rigidbody
+        /// </summary>
+        private void OnAnimatorMove()
+        {
+            if (inputHandler.isInteracting == false)
+                return;
+
+            float delta = Time.deltaTime;
+            playerLocomotion.rigidbody.linearDamping = 0;
+            Vector3 deltaPosition = anim.deltaPosition;
+            deltaPosition.y = 0;
+            Vector3 velocity = deltaPosition / delta;
+            playerLocomotion.rigidbody.linearVelocity = velocity;
         }
     }
 }
