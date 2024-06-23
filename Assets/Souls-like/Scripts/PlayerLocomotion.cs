@@ -4,6 +4,7 @@ namespace ZhouYu
 {
     public class PlayerLocomotion : MonoBehaviour
     {
+        PlayerManager playerManager;
         Transform cameraObject;
         InputHandler inputHandler;
         Vector3 moveDirection;
@@ -16,7 +17,7 @@ namespace ZhouYu
         public new Rigidbody rigidbody;
         public GameObject normaCamera;
 
-        [Header("Stats")]
+        [Header("Move Stats")]
         [SerializeField]   //在inspector窗口显示
         float movementSpeed = 5;
 
@@ -26,11 +27,10 @@ namespace ZhouYu
         [SerializeField]
         float rotationSpeed = 10;
 
-        public bool isSprinting;
-
 
         void Start()
         {
+            playerManager = GetComponent<PlayerManager>();
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             animatorHandler = GetComponentInChildren<AnimatorHandler>();
@@ -39,15 +39,6 @@ namespace ZhouYu
             animatorHandler.Initialize();
         }
 
-        public void Update()
-        {
-            float delta = Time.deltaTime;
-
-            //isSprinting = inputHandler.b_Input;
-            inputHandler.TickInput(delta);
-            HandleMovement(delta);
-            HandleRollingAndSprinting(delta);
-        }
 
         #region Movement
         Vector3 normalVector;
@@ -82,7 +73,7 @@ namespace ZhouYu
 
         }
 
-        private void HandleMovement(float delta)
+        public void HandleMovement(float delta)
         {
             if (inputHandler.rollFlag)
                 return;
@@ -98,7 +89,7 @@ namespace ZhouYu
             if (inputHandler.sprintFlag)
             {
                 speed = sprintSpeed;
-                isSprinting = true;
+                playerManager.isSprinting = true;
                 moveDirection *= speed;
             }
             else
@@ -114,7 +105,7 @@ namespace ZhouYu
             rigidbody.linearVelocity = projectedVelocity;
 
             //感觉这里代码写的不好isSprint代表的是b_input的值，也就是说有rollFlag的成分，只是rollFlag被拦住了
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
 
             if (animatorHandler.canRotate)
             {
@@ -122,7 +113,7 @@ namespace ZhouYu
             }
         }
 
-        private void HandleRollingAndSprinting(float delta)
+        public void HandleRollingAndSprinting(float delta)
         {
             if (animatorHandler.anim.GetBool("isInteracting"))
                 return;

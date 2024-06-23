@@ -18,7 +18,7 @@ namespace ZhouYu
         public bool rollFlag;
         public bool sprintFlag;
         public float rollInputTimer;
-        public bool isInteracting;
+
 
         PlayerControls inputActions;        //配置文件脚本
         CameraHandler cameraHandler;        //   
@@ -26,10 +26,7 @@ namespace ZhouYu
         Vector2 movementInput;
         Vector2 cameraInput;
 
-        private void Awake()
-        {
-            cameraHandler = CameraHandler.singleton;
-        }
+
 
         public void OnEnable()
         {
@@ -54,16 +51,7 @@ namespace ZhouYu
         }
 
 
-        private void FixedUpdate()
-        {
-            float delta = Time.fixedDeltaTime;
 
-            if (cameraHandler != null)
-            {
-                cameraHandler.Followtarget(delta);
-                cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
-            }
-        }
 
         public void TickInput(float delta)
         {
@@ -92,7 +80,7 @@ namespace ZhouYu
         {
             b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
 
-            //默认是冲刺，然后根据按键的时长判断是否是翻滚
+            //按下是冲刺，松开的是否判断是否翻滚
             if (b_Input)
             {
                 rollInputTimer += delta;
