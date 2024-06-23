@@ -22,7 +22,7 @@ namespace ZhouYu
         }
 
 
-        public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement) 
+        public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting) 
         {
             #region Vertical
             float v = 0;
@@ -66,6 +66,12 @@ namespace ZhouYu
             }
             #endregion
 
+            if (isSprinting)
+            {
+                v = 2;
+                h = horizontalMovement;
+            }
+
 
             anim.SetFloat(vertical, v, 0.1f, Time.deltaTime);
             anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
@@ -103,7 +109,7 @@ namespace ZhouYu
             Vector3 deltaPosition = anim.deltaPosition;
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
-            playerLocomotion.rigidbody.linearVelocity = velocity;
+            playerLocomotion.rigidbody.linearVelocity = velocity * 0.8f;
         }
     }
 }

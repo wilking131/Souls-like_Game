@@ -21,7 +21,12 @@ namespace ZhouYu
         float movementSpeed = 5;
 
         [SerializeField]
+        float sprintSpeed = 7;
+
+        [SerializeField]
         float rotationSpeed = 10;
+
+        public bool isSprinting;
 
 
         void Start()
@@ -37,8 +42,9 @@ namespace ZhouYu
         public void Update()
         {
             float delta = Time.deltaTime;
-            inputHandler.TickInput(delta);
 
+            //isSprinting = inputHandler.b_Input;
+            inputHandler.TickInput(delta);
             HandleMovement(delta);
             HandleRollingAndSprinting(delta);
         }
@@ -76,9 +82,11 @@ namespace ZhouYu
 
         }
 
-
         private void HandleMovement(float delta)
         {
+            if (inputHandler.rollFlag)
+                return;
+
             //摄像机的方向是前方，得出运动方向
             moveDirection = cameraObject.forward * inputHandler.vertical;
             moveDirection += cameraObject.right * inputHandler.horizontal;
@@ -86,7 +94,18 @@ namespace ZhouYu
             moveDirection.y = 0;
 
             float speed = movementSpeed;
-            moveDirection *= speed;
+
+            if (inputHandler.sprintFlag)
+            {
+                speed = sprintSpeed;
+                isSprinting = true;
+                moveDirection *= speed;
+            }
+            else
+            {
+                moveDirection *= speed;
+            }
+            
 
             //运动方向对平面投影,但是我觉得这行代码没有什么用
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
@@ -94,7 +113,8 @@ namespace ZhouYu
             //改变物体的速度
             rigidbody.linearVelocity = projectedVelocity;
 
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+            //感觉这里代码写的不好isSprint代表的是b_input的值，也就是说有rollFlag的成分，只是rollFlag被拦住了
+            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
 
             if (animatorHandler.canRotate)
             {

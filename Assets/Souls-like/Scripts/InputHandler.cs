@@ -16,6 +16,8 @@ namespace ZhouYu
         public bool b_Input;
 
         public bool rollFlag;
+        public bool sprintFlag;
+        public float rollInputTimer;
         public bool isInteracting;
 
         PlayerControls inputActions;        //配置文件脚本
@@ -66,7 +68,7 @@ namespace ZhouYu
         public void TickInput(float delta)
         {
             MoveInput(delta);
-            HandleRollInput();
+            HandleRollInput(delta);
         }
 
 
@@ -86,14 +88,25 @@ namespace ZhouYu
             mouseY = cameraInput.y;
         }
 
-        private void HandleRollInput()
+        private void HandleRollInput(float delta)
         {
             b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
-            print(inputActions.PlayerActions.Roll.phase);
 
+            //默认是冲刺，然后根据按键的时长判断是否是翻滚
             if (b_Input)
             {
-                rollFlag = true;
+                rollInputTimer += delta;
+                sprintFlag = true;
+            }
+            else
+            {
+                if(rollInputTimer > 0 && rollInputTimer < 0.5f)
+                {
+                    sprintFlag = false;
+                    rollFlag = true;
+                }
+
+                rollInputTimer = 0;
             }
         }
     }
