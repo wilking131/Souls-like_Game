@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace ZhouYu
 {
@@ -33,8 +34,9 @@ namespace ZhouYu
         private void Awake()
         {
             singleton = this;
-            myTransform = transform;
-            defaultPosition = cameraTransform.position.z;
+            myTransform = this.transform;
+            myTransform.position = targetTransform.position;
+            defaultPosition = cameraTransform.localPosition.z;
             ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);  //按位取反，所以忽略 8,9,10层
         }
 
@@ -80,9 +82,11 @@ namespace ZhouYu
             RaycastHit hit;
             Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
             direction.Normalize();
-  
+
+            
+
             //角色和相机之间进行检测
-            if(Physics.SphereCast(
+            if (Physics.SphereCast(
                 cameraPivotTransform.position, cameraSphereRadius, direction, out hit, Mathf.Abs(targetPosition), ignoreLayers)
                 )
             {
@@ -96,7 +100,9 @@ namespace ZhouYu
                 targetPosition = -minimumCollisionOffset;
             }
 
+            
             cameraTransformPosition.z = Mathf.Lerp(cameraTransform.localPosition.z, targetPosition, delta / 0.2f);
+            
             cameraTransform.localPosition = cameraTransformPosition;
 
         }

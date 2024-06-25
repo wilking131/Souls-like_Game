@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace ZhouYu
 {
-    //处理输入逻辑
+    /// <summary>
+    /// 处理输入逻辑，把输入的数据存储在当前的脚本里面
+    /// </summary>
     public class InputHandler : MonoBehaviour
     {
         public float horizontal;    //AD
@@ -21,11 +23,9 @@ namespace ZhouYu
 
 
         PlayerControls inputActions;        //配置文件脚本
-        CameraHandler cameraHandler;        //   
 
         Vector2 movementInput;
         Vector2 cameraInput;
-
 
 
         public void OnEnable()
@@ -49,8 +49,6 @@ namespace ZhouYu
             inputActions.Enable();
 
         }
-
-
 
 
         public void TickInput(float delta)

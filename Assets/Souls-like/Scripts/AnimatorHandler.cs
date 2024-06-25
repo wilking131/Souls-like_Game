@@ -6,9 +6,8 @@ namespace ZhouYu
     public class AnimatorHandler : MonoBehaviour
     {
         PlayerManager playerManager;
-        public Animator anim;
-        InputHandler inputHandler;
         PlayerLocomotion playerLocomotion;
+        public Animator anim;
         int vertical;    
         int horizontal;
         public bool canRotate;
@@ -17,7 +16,6 @@ namespace ZhouYu
         {
             playerManager = GetComponentInParent<PlayerManager>();
             anim = GetComponent<Animator>();
-            inputHandler = GetComponentInParent<InputHandler>();  
             playerLocomotion = GetComponentInParent<PlayerLocomotion>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal"); 
