@@ -122,7 +122,7 @@ namespace ZhouYu
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
 
             //改变物体的速度
-            rigidbody.linearVelocity = projectedVelocity;
+            rigidbody.velocity = projectedVelocity;
 
             //感觉这里代码写的不好isSprint代表的是b_input的值，也就是说有rollFlag的成分，只是rollFlag被拦住了
             animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
@@ -223,9 +223,9 @@ namespace ZhouYu
                         animatorHandler.PlayTargetAnimation("Falling", true);
                     }
 
-                    Vector3 vel = rigidbody.linearVelocity;   //为什么上面加了力，这里还要加速度，感觉不合理
+                    Vector3 vel = rigidbody.velocity;   //为什么上面加了力，这里还要加速度，感觉不合理
                     vel.Normalize();
-                    rigidbody.linearVelocity = vel * (movementSpeed / 2);
+                    rigidbody.velocity = vel * (movementSpeed / 2);
 
                     playerManager.isInAir = true;
                 }

@@ -36,6 +36,8 @@ namespace ZhouYu
             singleton = this;
             myTransform = this.transform;
             myTransform.position = targetTransform.position;
+            myTransform.eulerAngles = targetTransform.eulerAngles;
+            lookAngle = myTransform.eulerAngles.y;
             defaultPosition = cameraTransform.localPosition.z;
             ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);  //按位取反，所以忽略 8,9,10层
         }
@@ -56,6 +58,8 @@ namespace ZhouYu
 
         public void HandleCameraRotation(float delta, float mouseXInput, float mouseYInput)
         {
+
+
             //左右
             lookAngle += (mouseXInput * lookSpeed) / delta;
             //俯仰
@@ -63,7 +67,7 @@ namespace ZhouYu
             pivotAngle = Mathf.Clamp(pivotAngle, minimumPivot, maximumPivot);
 
             //cameraHoulder的Y轴旋转
-            Vector3 rotation = Vector3.zero;
+            Vector3 rotation = myTransform.eulerAngles;
             rotation.y = lookAngle;
             Quaternion targetRotation = Quaternion.Euler(rotation);
             myTransform.rotation = targetRotation;

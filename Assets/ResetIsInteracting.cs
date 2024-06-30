@@ -9,6 +9,4 @@ public class ResetIsInteracting : StateMachineBehaviour
     {
         animator.SetBool("isInteracting", false);
     }
-
-
 }

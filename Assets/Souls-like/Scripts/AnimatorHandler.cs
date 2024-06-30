@@ -10,7 +10,7 @@ namespace ZhouYu
         public Animator anim;
         int vertical;    
         int horizontal;
-        public bool canRotate;
+        public bool canRotate = true;
 
         public void Initialize()
         {
@@ -105,11 +105,11 @@ namespace ZhouYu
                 return;
 
             float delta = Time.deltaTime;
-            playerLocomotion.rigidbody.linearDamping = 0;
+            playerLocomotion.rigidbody.drag = 0;
             Vector3 deltaPosition = anim.deltaPosition;
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
-            playerLocomotion.rigidbody.linearVelocity = velocity * 0.8f;
+            playerLocomotion.rigidbody.velocity = velocity * 0.8f;
         }
     }
 }
